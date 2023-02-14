@@ -9,7 +9,7 @@ changePhoto.addEventListener("change", async (e) => {
   form.append("img", e.target.files[0]);
   if (e.target.value) {
     console.log(changePhoto.files);
-    const res = await fetch("http://localhost:3001/upload", {
+    const res = await fetch(`${window.location.origin}/upload`, {
       method: "POST",
       body: form,
     });
@@ -22,7 +22,7 @@ changePhoto.addEventListener("change", async (e) => {
 });
 
 const getProfile = async () => {
-  const res = await fetch("http://localhost:3001/getProfile");
+  const res = await fetch(`${window.location.origin}/getProfile`);
   const { src } = await res.json();
   profile.src = src;
 };
