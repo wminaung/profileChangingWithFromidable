@@ -17,13 +17,17 @@ changePhoto.addEventListener("change", async (e) => {
 
     if (data.message === "success") {
       getProfile();
+    } else {
+      console.log(data);
     }
   }
 });
 
 const getProfile = async () => {
   const res = await fetch(`${window.location.origin}/api/getProfile`);
-  const { src } = await res.json();
+  const { src } = await res.json().catch((err) => {
+    console.log(err);
+  });
   console.log(src);
   profile.src = src;
 };
