@@ -65,7 +65,7 @@ let infoData = [
   },
 ];
 
-app.post("/upload", (request, response) => {
+app.post("/api/upload", (request, response) => {
   const form = formidable();
   form.parse(request, function (error, fields, files) {
     console.log("**********************************************************");
@@ -108,7 +108,7 @@ app.post("/upload", (request, response) => {
   });
 });
 
-app.get("/getProfile", (req, res) => {
+app.get("/api/getProfile", (req, res) => {
   res.status(200).json({ src: infoData[infoData.length - 1].Location });
 });
 
