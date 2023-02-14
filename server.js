@@ -7,6 +7,7 @@ const { v4: uuidv4 } = require("uuid");
 const fs = require("fs");
 
 const app = express();
+app.use(express.json());
 // Views in public directory
 app.use(express.static("public"));
 // Set S3 endpoint to DigitalOcean Spaces
@@ -15,33 +16,15 @@ const s3 = new aws.S3({
   endpoint: "sgp1.digitaloceanspaces.com",
 });
 
-// Change bucket property to your Space name
-// function uploadToS3(file, destFileName, callback) {
-//   let uploadParams = {
-//     Bucket: "msquarefdc",
-//     Key: destFileName,
-//     ACL: "public-read",
-//     Body: "",
-//   };
-//   console.log(file.filepath);
-
-//   let fileStream = fs.createReadStream(file.filepath);
-//   fileStream.on("error", function (err) {
-//     console.log("File Error", err);
-//   });
-
-//   uploadParams.Body = fileStream;
-//   s3.upload(uploadParams, callback);
-// }
-
-app.post("/upload", function (request, response, next) {
+app.post("/upload", (request, response) => {
   const form = formidable();
   form.parse(request, function (error, fields, files) {
     console.log("**********************************************************");
     if (error) {
       console.log("error from form.parse", error);
     }
-    const file = files.upload;
+
+    const file = files.img;
     const destFileName = file.originalFilename;
     const fileStream = fs.createReadStream(file.filepath);
 
@@ -84,45 +67,13 @@ app.get("/getAllImages", (req, res) => {
   res.status(200).json(fileUploadInfo);
 });
 
-// Main, error and success views
-
-app.get("/", function (request, response) {
-  response.sendFile(__dirname + "/public/index.html");
-});
-
-app.get("/success", function (request, response) {
-  response.sendFile(__dirname + "/public/success.html");
-});
-
-app.get("/error", function (request, response) {
-  response.sendFile(__dirname + "/public/error.html");
+app.get("/getProfile", (req, res) => {
+  const infoData = JSON.parse(fs.readFileSync(__dirname + "/info.json"));
+  res.status(200).json({ src: infoData[infoData.length - 1].Location });
 });
 
 app.listen(3001, function () {
   console.log("Server listening on port 3001.");
 });
-// uploadToS3(file, destFileName, (err, data) => {
-//   if (err) {
-//     console.log(error);
-//     return response.redirect("/error");
-//   } else if (data) {
-//     console.log("File uploaded successfully.", data);
-//     response.redirect("/success");
-//   } else {
-//     console.log("else");
-//     response.write(
-//       '{"status": 442, "message": "Yikes! Error saving your photo. Please try again."}'
-//     );
-//     return response.end();
-//   }
-// });
-/*
-{
-  ETag: '"162cf8c76e442cc7576f673e06321e69"',
-  Location: 'https://msquarefdc.sgp1.digitaloceanspaces.com/wma/38cb207d-5b0c-4b52-af89-5e11ce2880edwp5332094.jpg',
-  key: 'wma/38cb207d-5b0c-4b52-af89-5e11ce2880edwp5332094.jpg',
-  Key: 'wma/38cb207d-5b0c-4b52-af89-5e11ce2880edwp5332094.jpg',
-  Bucket: 'msquarefdc'
-}
-*/
-const infoData = JSON.parse(fs.readFileSync(__dirname + "/info.json"));
+
+// const infoData = JSON.parse(fs.readFileSync(__dirname + "/info.json"));

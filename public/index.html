@@ -1,68 +1,32 @@
-...
-<style>
-  body {
-    background-color: #808080;
-  }
-  .imageDiv {
-    width: 400px;
-  }
-  .myImage {
-    width: 400px;
-  }
-</style>
-<h1>DigitalOcean Spaces Tutorial</h1>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
 
-<p>
-  Please select a file and submit the form to upload an asset to your
-  DigitalOcean Space.
-</p>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main>
+      <img
+        width="300"
+        src="https://msquarefdc.sgp1.digitaloceanspaces.com/wma/6a72934f-68d8-4790-b26c-53bccfe1e0e0aeiougg.jpg"
+        alt="profile"
+        id="profile"
+      /><i class="fa-regular fa-id-badge edit" id="editIcon"></i>
+    </main>
+    <div>
+      <input id="changePhoto" accept="image/*" type="file" name="upload" />
+    </div>
 
-<form>
-  <label for="file">Upload a file</label>
+    <script src="https://kit.fontawesome.com/f5fc187454.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
+<!-- <script src="script.js"></script> -->
+<!-- <form>
   <input type="file" name="upload" />
   <input type="submit" class="button" />
-</form>
-<main></main>
-...
-<script>
-  const formTag = document.querySelector("form");
-  formTag.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const res = await fetch("http://localhost:3001/upload", {
-      method: "POST",
-      body: new FormData(formTag),
-    });
-
-    const data = await res.json();
-
-    if (data.message === "success") {
-      getAllImage();
-    }
-  });
-
-  const mainTag = document.querySelector("main");
-  const getAllImage = async () => {
-    mainTag.innerHTML = "";
-    const res = await fetch("http://localhost:3001/getAllImages");
-
-    const imagesData = await res.json();
-    console.log(imagesData);
-    imagesData.forEach((data) => {
-      const { Location, key, id } = data;
-
-      const imageDiv = document.createElement("div");
-      imageDiv.classList.add("imageDiv");
-
-      const imageTag = document.createElement("img");
-      imageTag.classList.add("myImage");
-      imageTag.src = Location;
-      imageTag.alt = key;
-
-      imageDiv.append(imageTag);
-
-      mainTag.append(imageDiv);
-    });
-  };
-  getAllImage();
-</script>
+</form> -->
