@@ -4,7 +4,7 @@ const express = require("express");
 const formidable = require("formidable");
 const { v4: uuidv4 } = require("uuid");
 const fs = require("fs");
-
+require("dotenv").config();
 const app = express();
 app.use(express.json());
 // Views in public directory
@@ -13,6 +13,8 @@ app.use(express.static("public"));
 
 const s3 = new aws.S3({
   endpoint: "sgp1.digitaloceanspaces.com",
+  accessKeyId: process.env.SPACES_ACCESS_KEY,
+  secretAccessKey: process.env.SPACES_SECRET_KEY,
 });
 let infoData = [
   {
