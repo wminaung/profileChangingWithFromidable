@@ -114,8 +114,8 @@ app.get("/api/getProfile", (req, res) => {
   res.status(200).json({ src: infoData[infoData.length - 1].Location });
 });
 
-app.listen(3001, function () {
-  console.log("Server listening on port 3001.");
+app.listen(3012, function () {
+  console.log("Server listening on port 3012.");
 });
 
 // const infoData = JSON.parse(fs.readFileSync(__dirname + "/info.json"));
